@@ -8,7 +8,7 @@ class Settings:
         self.bg_color = (230, 230, 230)
 
         # Hero settings
-        self.hero_size = 50
+        self.hero_size = 40
         self.hero_color = (255, 0, 0)
 
         # Tile settings

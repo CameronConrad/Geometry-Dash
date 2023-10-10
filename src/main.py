@@ -2,6 +2,7 @@
 
 import pygame
 import sys
+import os
 import json
 
 from settings import Settings
@@ -31,33 +32,35 @@ class Game:
         self.level = 0
 
         # Load game map
-        with open("map.json") as f:
+        map_path = os.path.join(os.path.dirname(__file__), 'assets', 'map.json')
+        with open(map_path) as f:
             self.map = json.load(f)
     
-    def initializeHero(self):
+    def initializeHero(self, x, y):
         # Create a hero
-        self.hero = Hero(self, 100, 100)
+        self.hero = Hero(self, x, y)
 
         # Add the hero to the group of sprites
         self.sprites.add(self.hero)
     
     def setUp(self):
         # Initialize the hero
-        self.initializeHero()
+        self.loadLevel()
     
-    def loadLevel(self, level):
-        level = self.map[level]
-        for row in level:
+    def loadLevel(self):
+        levelMap = self.map[self.level]
+        for row in levelMap:
             for tile in row:
-                if tile != 0:
+                if tile > 0:
                     self.sprites.add(Tile(self, row.index(tile) * self.settings.tile_width, 
-                                          level.index(row) * self.settings.tile_height, 
-                                          self.settings.tile_codes[tile]))
+                                        levelMap.index(row) * self.settings.tile_height, 
+                                        self.settings.tile_codes[tile]))
+                elif tile == -1:
+                    # The hero
+                    self.initializeHero(row.index(tile) * self.settings.tile_width, 
+                                        levelMap.index(row) * self.settings.tile_height)
 
     def run(self):
-        # Load the first level
-        self.loadLevel(self.level)
-
         # Start the main loop for the game
         while True:
             # Watch for keyboard and mouse events
