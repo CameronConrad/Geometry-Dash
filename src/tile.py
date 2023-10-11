@@ -1,17 +1,22 @@
 import pygame
 
-class Tile:
+class Tile(pygame.sprite.Sprite):
     def __init__(self, game, x, y, type):
+        # Call the parent class (Sprite) constructor
+        super().__init__()
+
         # Import the game instance
         self.game = game
 
         # Tile attributes
         self.type = type
         self.image = pygame.Surface((self.game.settings.tile_width, self.game.settings.tile_height))
-        self.image.fill(self.game.settings.tile_types[self.type])
+        self.image.fill(self.game.settings.tile_colors[self.type])
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+
+        self.velocity = 0
     
     def setPos(self, x, y):
         # Set the position of the tile
@@ -32,4 +37,7 @@ class Tile:
 
     def update(self):
         # code to update the tile's position or other properties
-        self.rect.x -= self.game.settings.speed * self.game.settings.direction
+        # self.rect.x -= self.game.settings.speed * self.game.settings.direction
+        # Check if the tile is off the screen
+        if self.rect.x < -self.rect.width:
+            self.kill()

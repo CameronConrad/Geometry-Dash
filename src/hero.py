@@ -19,8 +19,20 @@ class Hero(pygame.sprite.Sprite):
         # Set the position of the rect
         self.rect.x = x
         self.rect.y = y
+
+        # Set game attributes
+        self.alive = True
+        self.jump = False
+        self.acceleration = 0
     
     def draw(self):
         # Draw the hero
         self.game.screen.blit(self.image, self.rect)
+    
+    def update(self):
+        # Check if jump is true
+        if self.jump:
+            self.acceleration = self.game.settings.jump_height
+            
+            
         

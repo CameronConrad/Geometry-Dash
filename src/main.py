@@ -44,21 +44,27 @@ class Game:
         self.sprites.add(self.hero)
     
     def setUp(self):
-        # Initialize the hero
+        # Generate the sprites needed for the game based on the level
         self.loadLevel()
     
     def loadLevel(self):
+        # Load the level
         levelMap = self.map[self.level]
-        for row in levelMap:
-            for tile in row:
+        # Create tiles based on the values in the level array
+        for y, row in enumerate(levelMap):
+            for x, tile in enumerate(row):
                 if tile > 0:
-                    self.sprites.add(Tile(self, row.index(tile) * self.settings.tile_width, 
-                                        levelMap.index(row) * self.settings.tile_height, 
+                    # A tile
+                    self.sprites.add(Tile(self, x * self.settings.tile_width, 
+                                        y * self.settings.tile_height, 
                                         self.settings.tile_codes[tile]))
                 elif tile == -1:
                     # The hero
-                    self.initializeHero(row.index(tile) * self.settings.tile_width, 
-                                        levelMap.index(row) * self.settings.tile_height)
+                    self.initializeHero(x * self.settings.tile_width, 
+                                        y * self.settings.tile_height)
+        # Print the positions of the sprites
+        for sprite in self.sprites.sprites():
+            print(f"x: {sprite.rect.x}, y: {sprite.rect.y}")
 
     def run(self):
         # Start the main loop for the game
