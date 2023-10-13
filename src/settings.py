@@ -11,14 +11,10 @@ class Settings:
         self.hero_size = 40
         self.hero_color = (255, 0, 0)
 
-        # Tile settings
-        self.tile_width = 50
-        self.tile_height = 50
-        self.tile_color = (0, 0, 255)
-
         # Gameplay settings
         self.speed = 1
         self.jump_height = 5
+        self.gravity = 1
 
         # Graphics settings
         self.fps = 60
@@ -29,7 +25,21 @@ class Settings:
             1: "normal",
             2: "spike"
         }
-        self.tile_colors = {
-            "normal": self.tile_color,
-            "spike": (255, 255, 0)
+        self.tile_attributes = {
+            "normal": {
+                "outline": (0, 0, 0),
+                "color": (0, 0, 255),
+                "width": 50,
+                "height": 50,
+                "xfatal": True,
+                "yfatal": False
+            },
+            "spike": {
+                "outline": (0, 0, 0),
+                "color": (255, 0, 0),
+                "width": 30,
+                "height": 30,
+                "xfatal": True,
+                "yfatal": True,
+            },
         }

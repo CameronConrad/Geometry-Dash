@@ -10,8 +10,9 @@ class Tile(pygame.sprite.Sprite):
 
         # Tile attributes
         self.type = type
-        self.image = pygame.Surface((self.game.settings.tile_width, self.game.settings.tile_height))
-        self.image.fill(self.game.settings.tile_colors[self.type])
+        self.image = pygame.Surface((self.game.settings.tile_attributes[self.type]["width"], 
+                                     self.game.settings.tile_attributes[self.type]["height"]))
+        self.image.fill(self.game.settings.tile_attributes[self.type]["color"])
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y

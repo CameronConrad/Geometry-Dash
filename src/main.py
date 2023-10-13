@@ -25,11 +25,15 @@ class Game:
         # Set the caption
         pygame.display.set_caption("Geometry Dash")
 
-        # Create a group for all sprites
-        self.sprites = pygame.sprite.Group()
+        # Create a group for all obstacles
+        self.obstacles = pygame.sprite.Group()
 
         # Create level variable
         self.level = 0
+
+        # Set fps
+        self.fps = 2
+        self.clock = pygame.time.Clock()
 
         # Load game map
         map_path = os.path.join(os.path.dirname(__file__), 'assets', 'map.json')
@@ -39,9 +43,6 @@ class Game:
     def initializeHero(self, x, y):
         # Create a hero
         self.hero = Hero(self, x, y)
-
-        # Add the hero to the group of sprites
-        self.sprites.add(self.hero)
     
     def setUp(self):
         # Generate the sprites needed for the game based on the level
@@ -55,20 +56,21 @@ class Game:
             for x, tile in enumerate(row):
                 if tile > 0:
                     # A tile
-                    self.sprites.add(Tile(self, x * self.settings.tile_width, 
-                                        y * self.settings.tile_height, 
-                                        self.settings.tile_codes[tile]))
+                    width = self.settings.tile_attributes[self.settings.tile_codes[tile]]["width"]
+                    height = self.settings.tile_attributes[self.settings.tile_codes[tile]]["height"]
+                    self.obstacles.add(Tile(self, x * width, 
+                                            y * height, 
+                                            self.settings.tile_codes[tile]))
                 elif tile == -1:
                     # The hero
-                    self.initializeHero(x * self.settings.tile_width, 
-                                        y * self.settings.tile_height)
-        # Print the positions of the sprites
-        for sprite in self.sprites.sprites():
-            print(f"x: {sprite.rect.x}, y: {sprite.rect.y}")
+                    self.initializeHero(x * self.settings.tile_attributes["normal"]["width"], 
+                                        y * self.settings.tile_attributes["normal"]["height"])
 
     def run(self):
         # Start the main loop for the game
         while True:
+            self.clock.tick(self.fps)
+            
             # Watch for keyboard and mouse events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -78,13 +80,23 @@ class Game:
             self.screen.fill(self.settings.bg_color)
 
             # Update sprites
-            self.sprites.update()
+            self.hero.update()
+            self.obstacles.update()
 
             # Draw sprites
-            self.sprites.draw(self.screen)
+            self.hero.draw()
+            self.obstacles.draw(self.screen)
+
+            print(self.hero.rect.x, self.hero.rect.y)
+            if not self.hero.alive:
+                self.quit()
 
             # Make the most recently drawn screen visible
             pygame.display.update()
+    
+    def quit(self):
+        pygame.quit()
+        sys.exit()
 
 if __name__ == '__main__':
     game = Game()
