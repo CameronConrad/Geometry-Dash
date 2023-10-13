@@ -44,7 +44,7 @@ class Hero(pygame.sprite.Sprite):
             self.acceleration += self.game.settings.gravity
     
     def jump(self):
-        self.acceleration = self.game.settings.jump_height
+        self.acceleration = -self.game.settings.jump_height
             
     def check_key_presses(self):
         for event in pygame.event.get():
@@ -74,22 +74,19 @@ class Hero(pygame.sprite.Sprite):
                 # Check for collision with the left side of the tile
                 elif self.rect.right + self.velocity > tile.rect.left and self.rect.left < tile.rect.left:
                     self.alive = False
-                # Check for collision with the bottom of the tile
+                # Check for collision with the top of the tile
                 elif self.rect.top + self.velocity < tile.rect.bottom:
                     # Set the velocity to 0
                     self.velocity = 0
                     # Set the top of the hero to the bottom of the tile
-                    self.rect.top = tile.rect.bottom
+                    self.rect.bottom = tile.rect.top
                     # Set the acceleration to 0
                     self.acceleration = 0
-                # Check for collision with the top of the tile
+                # Check for collision with the bottom of the tile
                 elif self.rect.bottom + self.velocity > tile.rect.top:
-                    if tile.type == "spike":
-                        self.alive = False
-                        break
                     # Set the velocity to 0
                     self.velocity = 0
                     # Set the bottom of the hero to the top of the tile
-                    self.rect.bottom = tile.rect.top
+                    self.rect.top = tile.rect.bottom
                     # Set the acceleration to 0
                     self.acceleration = 0

@@ -32,7 +32,7 @@ class Game:
         self.level = 0
 
         # Set fps
-        self.fps = 2
+        self.fps = 5
         self.clock = pygame.time.Clock()
 
         # Load game map
@@ -87,7 +87,6 @@ class Game:
             self.hero.draw()
             self.obstacles.draw(self.screen)
 
-            print(self.hero.rect.x, self.hero.rect.y)
             if not self.hero.alive:
                 self.quit()
 
